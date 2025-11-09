@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         DOCKERHUB_CREDENTIALS = 'dockerhub-credentials'
-        EC2_PUBLIC_IP = 'YOUR_EC2_IP'
+        EC2_PUBLIC_IP = '51.20.104.207'
         COMPOSE_FILE = 'docker-compose.jenkins.yml'
     }
 
