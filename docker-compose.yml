@@ -1,8 +1,8 @@
 version: "3.8"
 
 services:
-  todo-app:
-    container_name: todo-web
+  todo-app-part1:
+    container_name: todo-part1-web
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,16 +10,16 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - MONGODB_URI=mongodb://admin:todoapp123@mongodb:27017/tododb?authSource=admin
+      - MONGODB_URI=mongodb://admin:todoapp123@todo-part1-db:27017/tododb?authSource=admin
     depends_on:
-      - mongodb
+      - todo-part1-db
     restart: unless-stopped
     networks:
-      - todo-network
+      - todo-part1-network
 
-  mongodb:
+  todo-part1-db:
     image: mongo:7.0
-    container_name: todo-db
+    container_name: todo-part1-db
     ports:
       - "27017:27017"
     environment:
@@ -27,11 +27,11 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=todoapp123
       - MONGO_INITDB_DATABASE=tododb
     volumes:
-      - mongodb-data:/data/db
-      - mongodb-config:/data/configdb
+      - mongodb-part1-data:/data/db
+      - mongodb-part1-config:/data/configdb
     restart: unless-stopped
     networks:
-      - todo-network
+      - todo-part1-network
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
       interval: 10s
@@ -39,11 +39,11 @@ services:
       retries: 5
 
 volumes:
-  mongodb-data:
+  mongodb-part1-data:
     driver: local
-  mongodb-config:
+  mongodb-part1-config:
     driver: local
 
 networks:
-  todo-network:
+  todo-part1-network:
     driver: bridge
